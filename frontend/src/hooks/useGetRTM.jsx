@@ -12,6 +12,7 @@ const useGetRTM = () => {
     const location = useLocation(); // ✅ Fix: Get current route
 
     useEffect(() => {
+        console.log("Socket instance:", socket); // Debugging line
         if (!socket) return;
 
         socket.on('newMessage', (newMessage) => {
@@ -25,6 +26,7 @@ const useGetRTM = () => {
         });
 
         socket.on('messageNotification', (notification) => {
+            console.log("Message notification received:", notification); // Debugging line
             dispatch(setMessageNotification(notification));
         });
 

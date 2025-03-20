@@ -11,6 +11,7 @@ import { setPosts, setSelectedPost } from '@/redux/postSlice.js'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import Logo from './Logo'
 import { setMessageNotification } from '@/redux/rtnSlice.js'
+import SearchBox from './SearchBox'; // Import the SearchBox component
 
 const LeftSideBar = () => {
   const navigate = useNavigate()
@@ -18,6 +19,7 @@ const LeftSideBar = () => {
   const { likeNotification, messageNotification } = useSelector(store => store.realTimeNotification)
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // State to control SearchBox dialog
 
   // Track unread notifications
   const [hasUnreadLikeNotifications, setHasUnreadLikeNotifications] = useState(likeNotification.length > 0);
@@ -28,6 +30,7 @@ const LeftSideBar = () => {
   }, [likeNotification]);
 
   useEffect(() => {
+    console.log("Current message notifications:", messageNotification); // Debugging
     setHasUnreadMessageNotifications(messageNotification.length > 0);
   }, [messageNotification]);
 
@@ -50,18 +53,20 @@ const LeftSideBar = () => {
     if (textType === 'Logout') {
       logoutHandler();
     } else if (textType === 'Create') {
-      setOpen(true)
+      setOpen(true);
     } else if (textType === 'Profile') {
-      navigate(`/profile/${user?._id}`)
+      navigate(`/profile/${user?._id}`);
     } else if (textType === 'Home') {
-      navigate('/')
+      navigate('/');
     } else if (textType === 'Messages') {
-      navigate('/chat')
+      navigate('/chat');
       dispatch(setMessageNotification([]));
     } else if (textType === 'Explore') {
-      navigate('/explore')
+      navigate('/explore');
+    } else if (textType === 'Search') {
+      setIsSearchOpen(true); // Open the SearchBox dialog
     }
-  }
+  };
 
   const sideBarItems = [
     { icon: <Home />, text: "Home" },
@@ -156,6 +161,7 @@ const LeftSideBar = () => {
         </div>
       </div>
       <CreatePost open={open} setOpen={setOpen} />
+      <SearchBox isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} /> {/* Render SearchBox */}
     </div>
   )
 }

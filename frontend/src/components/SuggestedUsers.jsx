@@ -18,10 +18,9 @@ const SuggestedUsers = () => {
         )
     );
 
-    const isFollowing = userProfile?.followers?.includes(user?._id);
-
     const handleFollowOrUnfollow = async (suggestedUserId) => {
         try {
+            const isFollowing = userProfile?.following?.includes(suggestedUserId); // Fixed logic
             const res = await axios.post(
                 `http://localhost:8000/api/v1/user/followorunfollow/${suggestedUserId}`,
                 {},
@@ -31,9 +30,9 @@ const SuggestedUsers = () => {
             if (res.data.success) {
                 const updatedProfile = {
                     ...userProfile,
-                    followers: isFollowing
-                        ? userProfile.followers.filter((id) => id !== user._id)
-                        : [...userProfile.followers, user._id],
+                    following: isFollowing
+                        ? userProfile.following.filter((id) => id !== suggestedUserId)
+                        : [...userProfile.following, suggestedUserId],
                 };
 
                 dispatch(setUserProfile(updatedProfile)); // Updating global state
@@ -43,9 +42,11 @@ const SuggestedUsers = () => {
                 setLocalSuggestedUsers(prevUsers =>
                     prevUsers.filter(user => user._id !== suggestedUserId)
                 );
+            } else {
+                toast.error(res.data.message || "Failed to follow/unfollow.");
             }
         } catch (error) {
-            console.error("Error following/unfollowing:", error);
+            console.error("Error following/unfollowing:", error.response || error);
             toast.error("Something went wrong!");
         }
     };

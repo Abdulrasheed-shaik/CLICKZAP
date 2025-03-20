@@ -30,11 +30,18 @@ export const sendMessage = async (req, res)=>{
         const receiverSocketId = getReceiverSocketId(receiverId)
         if(receiverSocketId){
             io.to(receiverSocketId).emit('newMessage',newMessage)
+            console.log(`Emitting newMessage to socket ID: ${receiverSocketId}`);
             io.to(receiverSocketId).emit('messageNotification', {
                 type: 'message',
                 senderId: senderId,
                 text: message,
                 userDetails: req.user // Assume `req.user` contains sender details
+            });
+            console.log("Emitting messageNotification:", {
+                type: 'message',
+                senderId: senderId,
+                text: message,
+                userDetails: req.user
             });
         }
         return res.status(201).json({

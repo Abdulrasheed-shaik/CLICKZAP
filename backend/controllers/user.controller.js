@@ -209,7 +209,7 @@ export const searchUsers = async (req, res) => {
     try {
         const { query } = req.query; // Get search query
 
-        if (!query) {
+        if (!query || query.trim() === "") {
             return res.status(400).json({
                 success: false,
                 message: "Search query is required",
@@ -218,8 +218,15 @@ export const searchUsers = async (req, res) => {
 
         // Find users by username (case-insensitive)
         const users = await User.find({
-            username: { $regex: query, $options: "i" } // "i" makes it case-insensitive
-        }).select("-password"); // Exclude password from results
+            username: { $regex: `^${query}`, $options: "i" } // Match usernames starting with the query
+        }).select("_id username profilePicture"); // Return only necessary fields
+
+        if (users.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No users found",
+            });
+        }
 
         return res.status(200).json({
             success: true,
