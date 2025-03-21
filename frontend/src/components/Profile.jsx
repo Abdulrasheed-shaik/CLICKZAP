@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import useGetUserProfile from '@/hooks/useGetUserProfile'
 import { Link, useParams } from 'react-router-dom'
@@ -9,7 +9,7 @@ import { AtSign, Heart, ImageIcon, MessageCircle, VideoIcon, Volume2, VolumeX } 
 import axios from 'axios';
 import { toast } from 'sonner'
 import { setUserProfile } from '@/redux/authSlice.js'
-
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'; // Import dialog components
 
 const Profile = () => {
   const params = useParams()
@@ -20,6 +20,9 @@ const Profile = () => {
   const [muted, setMuted] = useState(true);
   const [playingVideo, setPlayingVideo] = useState(null);
   const videoRefs = useRef({}); // Use useRef to store video references
+  const [dialogOpen, setDialogOpen] = useState(false); // State to control dialog visibility
+  const [dialogData, setDialogData] = useState([]); // State to store followers or following data
+  const [dialogHeading, setDialogHeading] = useState(""); // State to store dialog heading
 
   const {userProfile, user} = useSelector(store=>store.auth)
   
@@ -76,7 +79,30 @@ const Profile = () => {
     }
   };
   
-  
+  const handleDialogOpen = async (type) => {
+    try {
+      setDialogHeading(type === "followers" ? "Followers" : "Following"); // Set heading dynamically
+      const res = await axios.get(
+        `http://localhost:8000/api/v1/user/${userProfile._id}/${type}`,
+        { withCredentials: true }
+      );
+
+      if (res.data.success) {
+        setDialogData(res.data.users); // Set the fetched user details
+      } else {
+        setDialogData([]); // No data to display
+      }
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      toast.error("Failed to load data!");
+      setDialogData([]);
+    }
+    setDialogOpen(true);
+  };
+
+  const handleViewProfile = () => {
+    setDialogOpen(false); // Close dialog box
+  };
   
   const displayedPost = activeTab === 'posts' 
   ? userProfile?.posts 
@@ -122,8 +148,18 @@ const Profile = () => {
               </div>
               <div className='flex items-center gap-3'>
                 <p> <span className='font-semibold'>{userProfile?.posts.length}</span> posts</p>
-                <p><span className='font-semibold'>{userProfile?.followers.length}</span> followers</p>
-                <p><span className='font-semibold'>{userProfile?.following.length}</span> following</p>
+                <p
+                  className='cursor-pointer'
+                  onClick={() => handleDialogOpen('followers')}
+                >
+                  <span className='font-semibold'>{userProfile?.followers.length}</span> followers
+                </p>
+                <p
+                  className='cursor-pointer'
+                  onClick={() => handleDialogOpen('following')}
+                >
+                  <span className='font-semibold'>{userProfile?.following.length}</span> following
+                </p>
               </div>
               <div className='flex flex-col gap-3'>
                 <span className='font-semibold'>{userProfile?.bio || 'bio here...'}</span>
@@ -149,8 +185,8 @@ const Profile = () => {
           </div>
           <div className='grid grid-cols-3 gap-1'>
             {
-              displayedPost?.map((post)=>{
-                const mediaType = post?.media[0]?.type; // Check media type
+              displayedPost?.map((post) => {
+                const mediaType = Array.isArray(post?.media) && post?.media[0]?.type; // Safeguard added
                 const isVideo = mediaType === "video";
                 return (
                   <div key={post?._id} className='relative group cursor-pointer'>
@@ -183,14 +219,16 @@ const Profile = () => {
                         </button>
                       </div>
                     ) : (
-                      <div className="relative">
-                      <img
-                        src={post?.media[0]?.url}
-                        alt="post"
-                        className="rounded-sm my-2 w-full aspect-square object-cover"
-                      />
-                      <ImageIcon className="absolute top-2 right-2 text-white bg-black/50 rounded-full p-1 w-6 h-6" />
-                    </div>
+                      Array.isArray(post?.media) && post?.media[0]?.url && ( // Safeguard added
+                        <div className="relative">
+                          <img
+                            src={post?.media[0]?.url}
+                            alt="post"
+                            className="rounded-sm my-2 w-full aspect-square object-cover"
+                          />
+                          <ImageIcon className="absolute top-2 right-2 text-white bg-black/50 rounded-full p-1 w-6 h-6" />
+                        </div>
+                      )
                     )
                     }
                   </div>
@@ -200,6 +238,31 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {/* Dialog Box */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{dialogHeading}</DialogTitle> {/* Use dynamic heading */}
+          </DialogHeader>
+          <div className='flex flex-col gap-4'>
+            {dialogData.map((profile) => (
+              <div key={profile._id} className='flex items-center justify-between'>
+                <div className='flex items-center gap-3'>
+                  <Avatar className='h-10 w-10'>
+                    <AvatarImage src={profile.profilePicture} alt='profile picture' />
+                    <AvatarFallback>{profile.username[0]}</AvatarFallback>
+                  </Avatar>
+                  <span>{profile.username}</span>
+                </div>
+                <Link to={`/profile/${profile._id}`}>
+                  <Button onClick={handleViewProfile} variant='secondary' className='hover:bg-gray-200 h-8'>View Profile</Button>
+                </Link>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

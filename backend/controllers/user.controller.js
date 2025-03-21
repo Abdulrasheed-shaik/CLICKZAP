@@ -240,3 +240,39 @@ export const searchUsers = async (req, res) => {
         });
     }
 };
+
+export const getFollowersOrFollowing = async (req, res) => {
+  try {
+    const { id, type } = req.params; // Get user ID and type (followers or following) from params
+
+    if (!id || !type || !['followers', 'following'].includes(type)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid request parameters",
+      });
+    }
+
+    const user = await User.findById(id).select(type).populate({
+      path: type,
+      select: "_id username profilePicture", // Fetch only necessary fields
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      users: user[type], // Return the populated followers or following
+    });
+  } catch (error) {
+    console.error("Error fetching followers or following:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};

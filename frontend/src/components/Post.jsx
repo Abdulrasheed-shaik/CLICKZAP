@@ -198,7 +198,7 @@ const bookmarkHandler = async () =>{
           </Avatar>
         </Link>
           <div className='flex gap-3 items-center'>
-          <Link to={`/profile/${user?._id}`}>{user?.username}</Link>
+          <Link to={`/profile/${user?._id}`}>{post.author?.username}</Link>
           {user?._id === post.author._id && <Badge variant='secondary'>Author</Badge> }
           </div>
         </div>
