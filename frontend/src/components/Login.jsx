@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Loader2 } from 'lucide-react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAuthUser } from '@/redux/authSlice'
+import Logo from './Logo'
 
 const Login = () => {
     const [input, setInput] = useState({
@@ -58,7 +59,7 @@ const Login = () => {
    <div className='flex items-center w-screen h-screen justify-center '>
    <form onSubmit={SignupHandler} className='shadow-lg flex flex-col gap-5 p-8'>
     <div className='my-4'>
-        <h1 className='text-center font-bold text-xl'>LOGO</h1>
+        <h1 className='text-center font-bold text-xl'><Logo/></h1>
         <p className='text-center text-sm'>Log in to dive back into your favorite moments and connections!</p>
     </div>
     <div>

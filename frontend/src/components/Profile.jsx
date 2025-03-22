@@ -114,9 +114,9 @@ const Profile = () => {
 
 
   return (
-    <div className='flex max-w-5xl justify-center mx-auto pl-10'>
-      <div className='flex flex-col gap-20 p-8'>
-        <div className='grid grid-cols-2'>
+    <div className='flex max-w-5xl justify-center mx-auto pl-10 mobile:mt-[15%] tablet:ml-[20%]'>
+      <div className='flex flex-col gap-20 p-8 mobile:gap-10 tablet:gap-10'>
+        <div className='grid grid-cols-2 mobile:grid-cols-1 mobile:gap-6 tablet:grid-cols-1 tablet:gap-6'>
           <section className='flex justify-center items-center'>
             <Avatar className='h-32 w-32'>
               <AvatarImage src={userProfile?.profilePicture} alt='profile picture'/>
@@ -124,15 +124,15 @@ const Profile = () => {
             </Avatar>
           </section>
           <section>
-            <div className='flex flex-col gap-5'>
-              <div className='flex items-center gap-2'>
+            <div className='flex flex-col gap-5 tablet:ml-[15%]'>
+              <div className='flex items-center gap-2 mobile:flex-col '>
                 <span>{userProfile?.username}</span>
                 {
                   isLoggedInProfile ?(
                 <>
                   <Link to='/account/edit'><Button variant='secondary' className='hover:bg-gray-200 h-8'>Edit profile</Button></Link>
                   <Button variant='secondary' className='hover:bg-gray-200 h-8'>View archive</Button>
-                  <Button variant='secondary' className='hover:bg-gray-200 h-8'>Ad tools</Button>
+                  {/* <Button variant='secondary' className='hover:bg-gray-200 h-8'>Ad tools</Button> */}
                 </>
                   ):(
                     isFollowing ? (
@@ -183,7 +183,7 @@ const Profile = () => {
               TAGS
             </span> */}
           </div>
-          <div className='grid grid-cols-3 gap-1'>
+          <div className='grid grid-cols-3 gap-1 mobile:grid-cols-1 tablet:grid-cols-2'>
             {
               displayedPost?.map((post) => {
                 const mediaType = Array.isArray(post?.media) && post?.media[0]?.type; // Safeguard added
@@ -241,13 +241,13 @@ const Profile = () => {
 
       {/* Dialog Box */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
+        <DialogContent className="mobile:max-w-xs">
           <DialogHeader>
             <DialogTitle>{dialogHeading}</DialogTitle> {/* Use dynamic heading */}
           </DialogHeader>
-          <div className='flex flex-col gap-4'>
+          <div className='flex flex-col gap-4 '>
             {dialogData.map((profile) => (
-              <div key={profile._id} className='flex items-center justify-between'>
+              <div key={profile._id} className='flex items-center justify-between '>
                 <div className='flex items-center gap-3'>
                   <Avatar className='h-10 w-10'>
                     <AvatarImage src={profile.profilePicture} alt='profile picture' />

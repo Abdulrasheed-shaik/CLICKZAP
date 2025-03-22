@@ -30,6 +30,16 @@ io.on('connection',(socket)=>{
         }
         io.emit('getOnlineUsers',Object.keys(userSocketMap))
     })
+    socket.on("message", ({ senderId, receiverId, textMessage, postId }) => {
+        const receiverSocketId = getReceiverSocketId(receiverId);
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("newMessage", {
+                senderId,
+                textMessage,
+                postId
+            });
+        }
+    });
 })
 
 export {app, server, io}

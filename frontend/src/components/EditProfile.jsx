@@ -65,18 +65,18 @@ const EditProfile = () => {
         }
     }
   return (
-    <div className='flex max-w-2xl mx-auto pl-10'>
-        <section className='flex flex-col gap-6 w-full my-8'>
+    <div className='flex max-w-2xl mx-auto pl-10 mobile:pl-[5%]  mobile:mt-[15%] tablet:ml-[25%]'>
+        <section className='flex flex-col gap-6 w-full my-8 mobile:w-[90%] tablet:w-[90%]'>
                 <h1 className='font-bold text-xl'>Edit Profile</h1>
-                <div className='flex items-center justify-between bg-gray-100 rounded-xl p-4'>
-                    <div className='flex items-center gap-3'>
+                <div className='flex items-center justify-between bg-gray-100 rounded-xl p-4 mobile:p-2 tablet:p-3'>
+                    <div className='flex items-center gap-3 '>
                         <Avatar>
                             <AvatarImage src={user?.profilePicture} alt="post_image" />
                             <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
                         <div>
                             <h1 className='font-bold text-sm'>{user?.username}</h1>
-                            <span className='text-gray-600'>{user?.bio || 'Bio here...'}</span>
+                            <span className='text-gray-600 mobile:text-sm'>{user?.bio || 'Bio here...'}</span>
                         </div>
                     </div>
                     <input ref={imageRef} onChange={fileChangeHandler} type='file' className='hidden' />

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-import { Dialog, DialogContent, DialogTrigger } from './ui/dialog'
-import { Bookmark, MessageCircle, MoreHorizontal, Send } from 'lucide-react'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from './ui/dialog'
+import { Bookmark, MessageCircle, MoreHorizontal, Send, Check } from 'lucide-react'
 import { Button } from './ui/button'
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { FaVolumeMute, FaVolumeUp } from "react-icons/fa";
@@ -12,7 +12,7 @@ import axios from 'axios'
 import { setPosts, setSelectedPost } from '@/redux/postSlice.js'
 import { Badge } from './ui/badge'
 import { Link } from 'react-router-dom'
-
+import ShareDialog from './ShareDialog'; // Import the new component
 
 const Post = ({post}) => {
   const [text,setText] = useState("")
@@ -26,6 +26,9 @@ const Post = ({post}) => {
   const [postLike, setPostLike] = useState(post.likes.length)
   const [comment, setComment] = useState(post.comments)
   const dispatch = useDispatch()
+  const [sendDialogOpen, setSendDialogOpen] = useState(false); // State for new dialog
+  const { suggestedUsers = [] } = useSelector(store => store.auth);
+  const [selectedUser, setSelectedUser] = useState(null); // State to track selected user
   
 
   const changeEventHandler = (e) => {
@@ -84,10 +87,10 @@ const Post = ({post}) => {
   }
   if (media.type === 'video') {
     return (
-      <div className='relative'>
+      <div className='relative mobile:h-[400px]'>
         <video
           ref={videoRef}
-          className='rounded-sm my-2 aspect-video object-cover cursor-pointer' // Increased width
+          className='rounded-sm my-2 aspect-video object-cover cursor-pointer mobile:h-full mobile:object-contain' // Increased width
           src={media.url}
           muted={isMuted}
           preload="auto"  // Preload the video for faster loading
@@ -188,25 +191,25 @@ const bookmarkHandler = async () =>{
 
 
   return (
-    <div className='my-8 w-full max-w-md -mx-[10%]'>
+    <div className='my-8 w-full max-w-md -mx-[10%] mobile:max-w-xs mobile:w-[90%] tablet:w-[80%] mobile:ml-[10%] tablet:ml-[1%]'>
       <div className='flex items-center justify-between '>
         <div className='flex items-center gap-2'>
-        <Link to={`/profile/${user?._id}`}>
+        <Link to={`/profile/${post.author?._id}`}>
           <Avatar className='w-6 h-6'>
             <AvatarImage src={post.author?.profilePicture} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </Link>
           <div className='flex gap-3 items-center'>
-          <Link to={`/profile/${user?._id}`}>{post.author?.username}</Link>
+          <Link to={`/profile/${post.author?._id}`}>{post.author?.username}</Link>
           {user?._id === post.author._id && <Badge variant='secondary'>Author</Badge> }
           </div>
         </div>
-        <Dialog >
+        <Dialog>
           <DialogTrigger asChild>
           <MoreHorizontal className='cursor-pointer'/>
           </DialogTrigger>
-          <DialogContent className='flex flex-col items-center text-sm text- center'>
+          <DialogContent className='flex flex-col items-center text-sm text- center max-w-xs'>
             {
               post?.author?._id !== user?._id && <Button variant='ghost' className='cursor-pointer w-fit text-[#ED4956] font-bold'>Unfollow</Button>
             }
@@ -231,7 +234,18 @@ const bookmarkHandler = async () =>{
             dispatch(setSelectedPost(post))
             setOpen(true)
             }} className='cursor-pointer hover:text-gray-600'/>
-          <Send className='cursor-pointer hover:text-gray-600'/>
+          <Send 
+            onClick={() => setSendDialogOpen(true)} // Open ShareDialog on click
+            className='cursor-pointer hover:text-gray-600' 
+          />
+          <ShareDialog 
+            open={sendDialogOpen} 
+            setOpen={setSendDialogOpen} 
+            suggestedUsers={suggestedUsers} 
+            selectedUser={selectedUser} 
+            setSelectedUser={setSelectedUser} 
+            postId={post._id} // Pass post ID as a prop
+          />
         </div>
         <Bookmark onClick={bookmarkHandler} className='cursor-pointer hover:text-gray-600'/>
       </div>

@@ -36,8 +36,8 @@ const Explore = () => {
   };
 
   return (
-    <div className="flex max-w-5xl justify-center mx-auto pl-20">
-      <div className="grid grid-cols-3 gap-1">
+    <div className="flex max-w-5xl justify-center mx-auto pl-20 laptop:max-w-2xl tablet:max-w-xl tablet:ml-[15%] mobile:-ml-[20%] mobile:max-w-5xl mobile:mt-[30%]">
+      <div className="grid grid-cols-3 gap-1 tablet:grid-cols-2 tablet:w-[95%] mobile:grid-cols-1 mobile:w-[70%]">
         {posts?.map((post) => {
           const mediaType = post?.media?.[0]?.type;
           const isVideo = mediaType === "video";

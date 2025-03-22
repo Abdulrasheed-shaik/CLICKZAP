@@ -4,7 +4,7 @@ import LeftSideBar from './LeftSideBar'
 
 const MainLayout = () => {
   return (
-    <div>
+    <div className='mobile:flex '>
         <LeftSideBar/>
         <div>
           <Outlet />

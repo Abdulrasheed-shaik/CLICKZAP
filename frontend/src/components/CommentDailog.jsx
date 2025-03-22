@@ -98,13 +98,13 @@ const CommentDailog = ({open , setOpen}) => {
   return (
     <div>
         <Dialog open={open}>
-            <DialogContent onInteractOutside={()=>setOpen(false)} className='max-w-2xl p-0 flex flex-col'>
-                <div className='flex flex-1'>
-                    <div className='w-1/2'>
+            <DialogContent onInteractOutside={()=>setOpen(false)} className='max-w-2xl p-0 flex flex-col mobile:w-[90%] mobile:max-w-sm tablet:max-w-lg mobile:h-[80%] mobile:overflow-y-auto'>
+                <div className='flex flex-1 mobile:flex-col'>
+                    <div className='w-1/2 mobile:w-full mobile:hidden'>
                     {selectedPost?.media?.length > 0 && renderMedia(selectedPost.media[0])}
                     </div>
-                    <div className='w-1/2 flex flex-col justify-between'>
-                        <div className='flex items-center justify-between p-4'>
+                    <div className='w-1/2 flex flex-col justify-between mobile:w-full'>
+                        <div className='flex items-center justify-between p-4 mobile:bottom-0'>
                             <div className='flex gap-3 items-center'>
                                 <Link>
                                     <Avatar>
@@ -121,7 +121,7 @@ const CommentDailog = ({open , setOpen}) => {
                                 <DialogTrigger asChild>
                                     <MoreHorizontal className='cursor-pointer'/>
                                 </DialogTrigger>
-                                <DialogContent className='flex flex-col items-center text-sm text-center'>
+                                <DialogContent className='flex flex-col items-center text-sm text-center mobile:w-[80%]'>
                                     <div className='cursor-pointer w-full text-[#ED4956] font-bold'>
                                         Unfollow
                                     </div>
@@ -132,13 +132,13 @@ const CommentDailog = ({open , setOpen}) => {
                             </Dialog>
                         </div>
                         <hr />
-                        <div className='flex-1 overflow-y-auto max-h-96 p-4'>
+                        <div className='flex-1 overflow-y-auto max-h-96 p-4 mobile:max-h-[100%] mobile:overflow-y-auto'>
                             {
                                 comment.map((comment)=> <Comment key={comment._id} comment={comment}/>)
                             }
                         </div>
                         <div className='p-4'>
-                            <div className='flex gap-3 items-center'>
+                            <div className='flex gap-3 items-center mobile:-mb-[5%]'>
                                 <input type="text" value={text} onChange={changeEventHandler} placeholder='Add a comment...' className='w-full outline-none border text-sm border-gray-300 p-2 rounded-3xl'/>
                                 <Button disabled={!text.trim()} onClick={sendMessageHandler} variant='outline' className="rounded-2xl">Send</Button>
                             </div>

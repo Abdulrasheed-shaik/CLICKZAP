@@ -7,6 +7,7 @@ import { toast } from 'sonner'
 import { Link, useNavigate } from 'react-router-dom'
 import { Loader2 } from 'lucide-react'
 import { useSelector } from 'react-redux'
+import Logo from './Logo'
 
 const Signup = () => {
     const [input, setInput] = useState({
@@ -55,9 +56,9 @@ const Signup = () => {
         },[])
   return (
    <div className='flex items-center w-screen h-screen justify-center '>
-   <form onSubmit={SignupHandler} className='shadow-lg flex flex-col gap-5 p-8'>
+   <form onSubmit={SignupHandler} className='shadow-lg flex flex-col gap-5 p-8 tablet:gap-2'>
     <div className='my-4'>
-        <h1 className='text-center font-bold text-xl'>LOGO</h1>
+        <h1 className='text-center font-bold text-xl'><Logo/></h1>
         <p className='text-center text-sm'>Sign up to connect and share moments with friends.</p>
     </div>
     <div>

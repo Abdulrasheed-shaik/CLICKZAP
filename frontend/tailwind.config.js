@@ -9,7 +9,12 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
-  		colors: {}
+  		colors: {},
+		  screens: {
+			mobile: { min: "320px", max: "480px" },
+			tablet: { min: "481px", max: "768px" },
+			laptop: { min: "769px", max: "1024px" },
+		  },
   	}
   },
   plugins: [require("tailwindcss-animate")],
