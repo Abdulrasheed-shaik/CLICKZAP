@@ -8,14 +8,5 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-  },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://clickzap-1.onrender.com', // Backend URL
-        changeOrigin: true,
-        secure: false,
-      },
-    },
-  },
+  }
 })

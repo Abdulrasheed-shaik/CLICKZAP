@@ -24,8 +24,6 @@ app.use(cookieParser())
 const corsOptions = {
     origin: 'https://clickzap-1.onrender.com', // Ensure this matches your frontend URL
     credentials: true, // Allow cookies and credentials
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
 };
 app.use(cors(corsOptions))
 
