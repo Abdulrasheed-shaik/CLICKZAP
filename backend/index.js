@@ -22,7 +22,7 @@ app.use(express.json({ limit: "500mb" })); // Allows large JSON payloads
 app.use(urlencoded({ extended: true, limit: "500mb" })); // Allows large form-data uploads
 app.use(cookieParser())
 const corsOptions = {
-    origin: process.env.URL, // Ensure this matches your frontend URL
+    origin: 'https://clickzap-1.onrender.com', // Ensure this matches your frontend URL
     credentials: true, // Allow cookies and credentials
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
