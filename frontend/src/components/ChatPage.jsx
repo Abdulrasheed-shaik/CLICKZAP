@@ -19,7 +19,7 @@ const ChatPage = () => {
 
   const sendMessageHandler = async (receiverId) =>{
     try {
-      const res = await axios.post(`http://localhost:8000/api/v1/message/send/${receiverId}`,{textMessage},{
+      const res = await axios.post(`https://clickzap-1.onrender.com/api/v1/message/send/${receiverId}`,{textMessage},{
         headers:{
           "Content-Type":'application/json'
         },
@@ -40,10 +40,10 @@ const ChatPage = () => {
   },[])
   return (
     <div className='flex ml-[16%] h-screen'>
-      <section className={`w-1/4 my-8 mobile:w-[200%] tablet:w-[100%] ${selectedUser ? 'mobile:hidden tablet:hidden' : ''}`}>
-        <h1 className='font-bold mb-4 px-3 text-xl tablet:ml-[20%]'>{user?.username}</h1>
+      <section className={`w-1/4 my-8 mobile:w-[200%] tablet:w-[100%] laptop:w-[40%] ${selectedUser ? 'mobile:hidden tablet:hidden' : ''}`}>
+        <h1 className='font-bold mb-4 px-3 text-xl tablet:ml-[20%] laptop:mx-9'>{user?.username}</h1>
         <hr className='mb-4 border-gray-300 tablet:ml-[20%] tablet:w-full'/>
-        <div className='overflow-y-auto h-[80vh] mobile:h-[90vh] tablet:ml-[20%]'>
+        <div className='overflow-y-auto h-[80vh] mobile:h-[90vh] tablet:ml-[20%] laptop:mx-8'>
           {
             suggestedUsers.map((suggestedUser,index)=>{
               const isOnline =onlineUsers.includes(suggestedUser?._id)
@@ -51,7 +51,11 @@ const ChatPage = () => {
                 <div key={suggestedUser?.id || index} onClick={()=>dispatch(setSelectedUser(suggestedUser))} className='flex gap-3 items-center p-3 hover:bg-gray-50 cursor-pointer'>
                   <Avatar className='w-14 h-14'>
                     <AvatarImage src={suggestedUser?.profilePicture}/>
-                    <AvatarFallback>AR</AvatarFallback>
+                    <AvatarFallback>
+                    {suggestedUser?.username
+                ? suggestedUser.username.split(" ").map(name => name[0]).join("").toUpperCase() 
+                : "U"}
+                    </AvatarFallback>
                   </Avatar>
                   <div className='flex flex-col'>
                     <span className='font-medium'>{suggestedUser?.username}</span>
@@ -66,10 +70,14 @@ const ChatPage = () => {
       {
         selectedUser ? (
           <section className='flex-1 border-l-gray-300 flex flex-col h-full mobile:h-[80%] mobile:mt-[25%] mobile:w-screen mobile:-ml-8 tablet:ml-[11%]'>
-            <div className='flex gap-2 items-center px-3 border-b border-gray-300 sticky top-0 bg-white z-10 mobile:h-[10%]'>
+            <div className='flex gap-2 items-center px-3 border-b border-gray-300 sticky top-0 bg-white z-10  mobile:h-[10%]'>
               <Avatar className='my-4'>
                 <AvatarImage src={selectedUser?.profilePicture} alt='profile'/>
-                <AvatarFallback>AR</AvatarFallback>
+                <AvatarFallback>
+                {selectedUser?.username
+                ? selectedUser.username.split(" ").map(name => name[0]).join("").toUpperCase() 
+                : "U"}
+                </AvatarFallback>
               </Avatar>
               <div className='flex items-center p-4 border-t border-t-gray-300'>
                 <span className='flex flex-col font-semibold'>
@@ -79,7 +87,7 @@ const ChatPage = () => {
               {/* Back button for mobile view */}
               <Button  variant='secondary'
                 onClick={() => dispatch(setSelectedUser(null))} 
-                className='ml-auto  mobile:block tablet:block hidden'
+                className='ml-auto  mobile:block tablet:block hidden laptop:block'
               >
                 Back
               </Button>

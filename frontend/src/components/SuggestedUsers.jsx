@@ -22,7 +22,7 @@ const SuggestedUsers = () => {
         try {
             const isFollowing = userProfile?.following?.includes(suggestedUserId); // Fixed logic
             const res = await axios.post(
-                `http://localhost:8000/api/v1/user/followorunfollow/${suggestedUserId}`,
+                `https://clickzap-1.onrender.com/api/v1/user/followorunfollow/${suggestedUserId}`,
                 {},
                 { withCredentials: true }
             );
@@ -65,7 +65,11 @@ const SuggestedUsers = () => {
                                 <Link to={`/profile/${user?._id}`}>
                                     <Avatar className='w-8 h-8'>
                                         <AvatarImage src={user?.profilePicture} />
-                                        <AvatarFallback>CN</AvatarFallback>
+                                        <AvatarFallback>
+                                        {user?.username
+                                        ? user.username.split(" ").map(name => name[0]).join("").toUpperCase() 
+                                        : "U"}
+                                        </AvatarFallback>
                                     </Avatar>
                                 </Link>
                                 <div>

@@ -57,7 +57,7 @@ const Profile = () => {
   const handleFollowOrUnfollow = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:8000/api/v1/user/followorunfollow/${userProfile._id}`,
+        `https://clickzap-1.onrender.com/api/v1/user/followorunfollow/${userProfile._id}`,
         {},
         { withCredentials: true }
       );
@@ -83,7 +83,7 @@ const Profile = () => {
     try {
       setDialogHeading(type === "followers" ? "Followers" : "Following"); // Set heading dynamically
       const res = await axios.get(
-        `http://localhost:8000/api/v1/user/${userProfile._id}/${type}`,
+        `https://clickzap-1.onrender.com/api/v1/user/${userProfile._id}/${type}`,
         { withCredentials: true }
       );
 
@@ -120,7 +120,11 @@ const Profile = () => {
           <section className='flex justify-center items-center'>
             <Avatar className='h-32 w-32'>
               <AvatarImage src={userProfile?.profilePicture} alt='profile picture'/>
-              <AvatarFallback>AR</AvatarFallback>
+              <AvatarFallback className='text-3xl'>
+              {userProfile?.username
+                ? userProfile.username.split(" ").map(name => name[0]).join("").toUpperCase() 
+                : "U"}
+              </AvatarFallback>
             </Avatar>
           </section>
           <section>
@@ -183,13 +187,13 @@ const Profile = () => {
               TAGS
             </span> */}
           </div>
-          <div className='grid grid-cols-3 gap-1 mobile:grid-cols-1 tablet:grid-cols-2'>
+          <div className='grid grid-cols-3 gap-1 mobile:grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-2 laptop:ml-[20%]'>
             {
               displayedPost?.map((post) => {
                 const mediaType = Array.isArray(post?.media) && post?.media[0]?.type; // Safeguard added
                 const isVideo = mediaType === "video";
                 return (
-                  <div key={post?._id} className='relative group cursor-pointer'>
+                  <div key={post?._id} className='relative group cursor-pointer laptop:w-[100%]'>
                     {
                       isVideo ? (
                         <div className="relative">

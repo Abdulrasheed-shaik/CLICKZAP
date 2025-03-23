@@ -1,11 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from './ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import { Check } from 'lucide-react';
 import { toast } from 'sonner';
+import axios from 'axios';
 
-const ShareDialog = ({ open, setOpen, suggestedUsers, selectedUser, setSelectedUser, postId }) => {
+const ShareDialog = ({ open, setOpen, suggestedUsers, selectedUser, setSelectedUser, postId, loggedInUser }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const handleShare = async () => {
+    if (!selectedUser) return;
+    setIsLoading(true);
+
+    try {
+        const res = await axios.post(`https://clickzap-1.onrender.com/api/v1/message/send/${selectedUser}`, {
+            postId,  // Send post ID in the message
+            senderId: loggedInUser
+        }, { withCredentials: true });
+
+        if (res.data.success) {
+            toast.success(`Post shared with ${selectedUser}!`);
+            setOpen(false);
+            setSelectedUser(null);
+        }
+    } catch (error) {
+        console.error(error);
+        toast.error(error.response?.data?.message || 'Failed to share post.');
+    } finally {
+        setIsLoading(false);
+    }
+};
+
+  
   return (
     <Dialog
       open={open} 
@@ -39,13 +65,10 @@ const ShareDialog = ({ open, setOpen, suggestedUsers, selectedUser, setSelectedU
         {selectedUser && (
           <Button 
             className='mt-4 w-full' 
-            onClick={() => {
-              toast.success(`Post ${postId} sent successfully!`); // Use postId in the success message
-              setOpen(false); // Close dialog after sending
-              setSelectedUser(null); // Reset selection
-            }}
+            onClick={handleShare}
+            disabled={isLoading}
           >
-            Send
+            {isLoading ? 'Sending...' : 'Send'}
           </Button>
         )}
       </DialogContent>

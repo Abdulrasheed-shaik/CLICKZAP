@@ -9,9 +9,17 @@ const messageSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     },
-    message:{
-        type:String,
-        required:true
+    message: {
+        type: String
+    },
+    post: {
+        caption: { type: String },
+        media: [
+            {
+                url: { type: String },
+                type: { type: String, enum: ["image", "video"] }
+            }
+        ]
     }
 })
 export const Message = mongoose.model("Message",messageSchema)

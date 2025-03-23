@@ -7,9 +7,10 @@ const useGetAllMessage = () => {
     const dispatch = useDispatch();
     const {selectedUser} = useSelector(store=>store.auth);
     useEffect(() => {
+        if (!selectedUser?._id) return;
         const fetchAllMessage = async () => {
             try {
-                const res = await axios.get(`http://localhost:8000/api/v1/message/all/${selectedUser?._id}`, { withCredentials: true });
+                const res = await axios.get(`https://clickzap-1.onrender.com/api/v1/message/all/${selectedUser?._id}`, { withCredentials: true });
                 if (res.data.success) {  
                     dispatch(setMessages(res.data.messages));
                 }
@@ -18,6 +19,6 @@ const useGetAllMessage = () => {
             }
         }
         fetchAllMessage();
-    }, [selectedUser]);
+    }, [selectedUser, dispatch]);
 };
 export default useGetAllMessage;

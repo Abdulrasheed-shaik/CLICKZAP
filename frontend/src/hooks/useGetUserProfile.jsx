@@ -8,7 +8,7 @@ const useGetUserProfile = (userId) => {
     useEffect(() => {
         const fetchUserprofile = async () => {
             try {
-                const res = await axios.get(`http://localhost:8000/api/v1/user/${userId}/profile`, { withCredentials: true });
+                const res = await axios.get(`https://clickzap-1.onrender.com/api/v1/user/${userId}/profile`, { withCredentials: true });
                 // Check for success and dispatch posts
                 if (res.data.success) {
                     dispatch(setUserProfile(res.data.user));

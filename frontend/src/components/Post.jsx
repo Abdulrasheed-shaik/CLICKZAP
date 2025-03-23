@@ -116,7 +116,7 @@ const deletePostHandler = async () =>{
     return;
   }
   try {
-    const res = await axios.delete(`http://localhost:8000/api/v1/post/delete/${post?._id}`,{withCredentials:true})
+    const res = await axios.delete(`https://clickzap-1.onrender.com/api/v1/post/delete/${post?._id}`,{withCredentials:true})
     if(res?.data?.success){
       const updatedPostData = posts.filter((postItem) => postItem?._id !== post?._id)
       dispatch(setPosts(updatedPostData))
@@ -132,7 +132,7 @@ const deletePostHandler = async () =>{
 const likeOrDislikeHandler = async () => {
   try {
     const action =  liked ? 'dislike' :'like'
-    const res = await axios.get(`http://localhost:8000/api/v1/post/${post._id}/${action}`,{withCredentials:true})
+    const res = await axios.get(`https://clickzap-1.onrender.com/api/v1/post/${post._id}/${action}`,{withCredentials:true})
     if(res.data.success){
       const updatedLikes = liked ? postLike - 1 : postLike + 1
       setPostLike(updatedLikes)
@@ -156,7 +156,7 @@ const likeOrDislikeHandler = async () => {
 
 const commentHandler = async () => {
   try {
-    const res = await axios.post(`http://localhost:8000/api/v1/post/${post._id}/comment`,{text},{
+    const res = await axios.post(`https://clickzap-1.onrender.com/api/v1/post/${post._id}/comment`,{text},{
       headers:{
         'Content-Type':'application/json'
       },withCredentials:true
@@ -179,7 +179,7 @@ const commentHandler = async () => {
 
 const bookmarkHandler = async () =>{
   try {
-    const res = await axios.get(`http://localhost:8000/api/v1/post/${post?._id}/bookmark`,{withCredentials:true})
+    const res = await axios.get(`https://clickzap-1.onrender.com/api/v1/post/${post?._id}/bookmark`,{withCredentials:true})
     if(res.data.success){
       toast.success(res.data.message)
     }
@@ -191,13 +191,17 @@ const bookmarkHandler = async () =>{
 
 
   return (
-    <div className='my-8 w-full max-w-md -mx-[10%] mobile:max-w-xs mobile:w-[90%] tablet:w-[80%] mobile:ml-[10%] tablet:ml-[1%]'>
-      <div className='flex items-center justify-between '>
+    <div className='my-8 w-full max-w-md -mx-[10%] mobile:max-w-xs mobile:w-[90%] tablet:w-[80%] mobile:ml-[10%] tablet:ml-[1%] laptop:w-[80%] laptop:mx-1'>
+      <div className='flex items-center justify-between'>
         <div className='flex items-center gap-2'>
         <Link to={`/profile/${post.author?._id}`}>
           <Avatar className='w-6 h-6'>
             <AvatarImage src={post.author?.profilePicture} />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>
+            {post.author?.username
+                ? post.author.username.split(" ").map(name => name[0]).join("").toUpperCase() 
+                : "U"}
+            </AvatarFallback>
           </Avatar>
         </Link>
           <div className='flex gap-3 items-center'>
@@ -245,6 +249,7 @@ const bookmarkHandler = async () =>{
             selectedUser={selectedUser} 
             setSelectedUser={setSelectedUser} 
             postId={post._id} // Pass post ID as a prop
+            loggedInUser={user?._id}
           />
         </div>
         <Bookmark onClick={bookmarkHandler} className='cursor-pointer hover:text-gray-600'/>

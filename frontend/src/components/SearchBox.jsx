@@ -24,7 +24,7 @@ const SearchBox = ({ isOpen, setIsOpen }) => {
 
     setLoading(true);
     try {
-      const res = await axios.get(`/api/v1/user/search?query=${query}`, {
+      const res = await axios.get(`https://clickzap-1.onrender.com/api/v1/user/search?query=${query}`, {
         withCredentials: true, // Include credentials (cookies)
         headers: {
           'Content-Type': 'application/json', // Ensure proper headers

@@ -17,8 +17,9 @@ const rtnSlice = createSlice({
             }
         },
         setMessageNotification: (state, action) => {
+            console.log("Reducer received message notification:", action.payload);
             if (action.payload.type === 'message') {
-                state.messageNotification.push(action.payload);
+                state.messageNotification = [...state.messageNotification, action.payload];
             }
         },
         clearLikeNotifications: (state) => {

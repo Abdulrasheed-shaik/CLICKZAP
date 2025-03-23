@@ -37,7 +37,7 @@ const LeftSideBar = () => {
 
   const logoutHandler = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/v1/user/logout`, { withCredentials: true })
+      const res = await axios.get(`https://clickzap-1.onrender.com/api/v1/user/logout`, { withCredentials: true })
       if (res.data.success) {
         dispatch(setAuthUser(null))
         dispatch(setSelectedPost(null))
@@ -145,14 +145,14 @@ const LeftSideBar = () => {
   ]
 
   return (
-    <div className='fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[16%] h-screen mobile:h-[10%] tablet:w-[24%] mobile:w-full mobile:shadow-md mobile:bg-gray-50'>
+    <div className='fixed top-0 z-10 left-0 px-4 border-r border-gray-300 w-[16%] h-screen mobile:h-[10%] tablet:w-[24%] laptop:w-[20%] mobile:w-full mobile:shadow-md mobile:bg-gray-50'>
       <div className='flex flex-col mobile:flex-row mobile:justify-between'>
-        <h1 className='my-8 text-xl tablet:my-1'><Logo /></h1>
+        <h1 className='my-8 text-xl tablet:my-10 laptop:my-1'><Logo /></h1>
         <div className='mobile:hidden'> {/* Sidebar for larger screens */}
           {sideBarItems.map((item, index) => (
             <div 
               key={index} 
-              className='flex items-center gap-3 hover:bg-gray-100 cursor-pointer rounded-lg p-3 my-3 mobile:text-[15px] tablet:text-[14px] tablet:my-1'
+              className='flex items-center gap-3 hover:bg-gray-100 cursor-pointer rounded-lg p-3 my-3 mobile:text-[15px] tablet:text-[14px] tablet:my-1 laptop:my-1'
               onClick={() => item.text !== "Notifications" && sideBarHandler(item.text)}
             >
               {item.render ? item.render() : (

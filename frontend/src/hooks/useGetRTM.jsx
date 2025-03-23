@@ -2,14 +2,14 @@ import { setMessages } from "@/redux/chatSlice.js";
 import { setMessageNotification, clearMessageNotifications } from "@/redux/rtnSlice.js";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom"; // ✅ Fix: Detect route changes
+import { useLocation } from "react-router-dom"; // Fix: Detect route changes
 
 const useGetRTM = () => {
     const dispatch = useDispatch();
     const { socket } = useSelector(store => store.socketio);
     const { messages } = useSelector(store => store.chat);
     const { messageNotification } = useSelector(store => store.realTimeNotification);
-    const location = useLocation(); // ✅ Fix: Get current route
+    const location = useLocation(); //  Fix: Get current route
 
     useEffect(() => {
         console.log("Socket instance:", socket); // Debugging line
@@ -21,7 +21,7 @@ const useGetRTM = () => {
                 type: 'message',
                 senderId: newMessage.senderId,
                 text: newMessage.message,
-                userDetails: newMessage.userDetails
+                // userDetails: newMessage.userDetails
             }));
         });
 
@@ -38,7 +38,7 @@ const useGetRTM = () => {
         };
     }, [messages, dispatch, socket]);
 
-    // ✅ Fix: Clear notifications when navigating to '/chat'
+    // Fix: Clear notifications when navigating to '/chat'
     useEffect(() => {
         if (location.pathname === "/chat") {
             dispatch(clearMessageNotifications());
