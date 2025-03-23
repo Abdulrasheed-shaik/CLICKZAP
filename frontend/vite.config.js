@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8000', // Backend URL
+        target: 'https://clickzap-1.onrender.com', // Backend URL
         changeOrigin: true,
         secure: false,
       },
