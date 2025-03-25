@@ -19,7 +19,7 @@ const ShareDialog = ({ open, setOpen, suggestedUsers, selectedUser, setSelectedU
         }, { withCredentials: true });
 
         if (res.data.success) {
-            toast.success(`Post shared with ${selectedUser}!`);
+            toast.success(`Post shared!`);
             setOpen(false);
             setSelectedUser(null);
         }

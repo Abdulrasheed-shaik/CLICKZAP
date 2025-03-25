@@ -191,7 +191,7 @@ const bookmarkHandler = async () =>{
 
 
   return (
-    <div className='my-8 w-full max-w-md -mx-[10%] mobile:max-w-xs mobile:w-[90%] tablet:w-[80%] mobile:ml-[10%] tablet:ml-[1%] laptop:w-[80%] laptop:mx-1'>
+    <div className='my-8 w-full max-w-md -mx-[10%] mobile:max-w-xs mobile:w-[90%] tablet:w-[80%] mobile:ml-[8%] tablet:ml-[1%] laptop:w-[80%] laptop:mx-1'>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-2'>
         <Link to={`/profile/${post.author?._id}`}>
