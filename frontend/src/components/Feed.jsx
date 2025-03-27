@@ -3,7 +3,7 @@ import Posts from './Posts'
 
 const Feed = () => {
   return (
-    <div className=' my-8 flex flex-col items-center w-full mobile:mt-[25%] mobile:mx-6 tablet:ml-[25%]'>
+    <div className=' my-8 flex flex-col items-center w-full mobile:mt-[25%] mobile:mx-4 tablet:ml-[25%]'>
         <Posts/>
     </div>
   )

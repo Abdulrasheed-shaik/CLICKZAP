@@ -69,8 +69,8 @@ const ChatPage = () => {
       </section>
       {
         selectedUser ? (
-          <section className='flex-1 border-l-gray-300 flex flex-col h-full mobile:h-[80%] mobile:mt-[25%] mobile:w-screen mobile:-ml-8 tablet:ml-[11%]'>
-            <div className='flex gap-2 items-center px-3 border-b border-gray-300 sticky top-0 bg-white z-10  mobile:h-[10%]'>
+          <section className='flex-1 border-l-gray-300 flex flex-col h-full mobile:h-[80%] mobile:mt-[25%] mobile:w-screen mobile:-ml-8 tablet:ml-[11%] '>
+            <div className='flex gap-2 items-center px-3 border-b border-gray-300 sticky top-0 bg-white z-10  mobile:h-[10%] z-[-1]'>
               <Avatar className='my-4'>
                 <AvatarImage src={selectedUser?.profilePicture} alt='profile'/>
                 <AvatarFallback>
