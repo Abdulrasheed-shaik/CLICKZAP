@@ -47,10 +47,10 @@ const SearchBox = ({ isOpen, setIsOpen }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="w-[40%] mobile:w-[80%] tablet:w-[80%] p-6 rounded-lg shadow-lg">
-        <h2 className="text-xl font-bold mb-4 mobile:text-md">Search Users</h2>
+        <h2 className="text-lg font-bold mb-4 mobile:text-md">Search Users</h2>
         <Input
           type="search"
-          placeholder="Search for users..."
+          placeholder="Search for users like nandan"
           value={searchQuery}
           onChange={handleSearch}
           className="mb-6 mobile:mb-3 mobile:w-[100%]"
