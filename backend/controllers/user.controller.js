@@ -276,3 +276,47 @@ export const getFollowersOrFollowing = async (req, res) => {
     });
   }
 };
+
+export const guestLogin = async (req, res) => {
+    try {
+        const guestEmail = "guest@example.com";
+        const guestPassword = "guest123";
+
+        let user = await User.findOne({ email: guestEmail });
+
+        if (!user) {
+            const hashedPassword = await bcrypt.hash(guestPassword, 10);
+            user = await User.create({
+                username: "Guest",
+                email: guestEmail,
+                password: hashedPassword,
+                bio: "This is a guest account.",
+            });
+        }
+
+        const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, { expiresIn: '1d' });
+
+        user = {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            profilePicture: user.profilePicture,
+            bio: user.bio,
+            followers: user.followers,
+            following: user.following,
+            posts: user.posts,
+        };
+
+        return res.cookie('token', token, { httpOnly: true, sameSite: 'strict', maxAge: 1 * 24 * 60 * 60 * 1000 }).json({
+            message: "Logged in as Guest",
+            success: true,
+            user,
+        });
+    } catch (error) {
+        console.error("Error during guest login:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+        });
+    }
+};

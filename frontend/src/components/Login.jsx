@@ -45,11 +45,34 @@ const Login = () => {
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message)
+            toast.error(error.response.data.message || "Login failed")
         }finally{
             setLoading(false)
         }
     } 
+
+    const guestLoginHandler = async () => {
+        try {
+            setLoading(true);
+            const res = await axios.post(`https://clickzap-1.onrender.com/api/v1/user/guest-login`, {}, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                withCredentials: true
+            });
+            if (res.data.success) {
+                dispatch(setAuthUser(res.data.user));
+                navigate("/");
+                toast.success(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(error.response?.data?.message || "Guest login failed");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(()=>{
         if(user){
             navigate('/')
@@ -91,9 +114,15 @@ const Login = () => {
             please Wait
         </Button>
       ) : (
-        <Button type='submit'>Login</Button>
+        <>
+            <Button type='submit'>Login</Button>
+            <Button type='button' onClick={guestLoginHandler} className='mt-2'>
+                Guest Login
+            </Button>
+        </>
       )   
     }
+
     
     <span className='text-center'>Don't have an account? <Link to="/signup" className='text-blue-600'>Sign up</Link></span>
    </form>
