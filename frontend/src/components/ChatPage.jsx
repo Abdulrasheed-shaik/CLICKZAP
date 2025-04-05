@@ -86,8 +86,11 @@ const ChatPage = () => {
               </div>
               {/* Back button for mobile view */}
               <Button  variant='secondary'
-                onClick={() => dispatch(setSelectedUser(null))} 
-                className='ml-auto  mobile:block tablet:block hidden laptop:block'
+                onClick={() => {
+                  console.log('Back button clicked');
+                  dispatch(setSelectedUser(null));
+                }} 
+                className='ml-auto mobile:block tablet:block laptop:hidden'
               >
                 Back
               </Button>
