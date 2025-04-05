@@ -31,7 +31,6 @@ const LeftSideBar = () => {
   }, [likeNotification]);
 
   useEffect(() => {
-    console.log("Current message notifications:", messageNotification); // Debugging
     setHasUnreadMessageNotifications(messageNotification.length > 0);
   }, [messageNotification]);
 
