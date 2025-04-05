@@ -14,6 +14,7 @@ export default {
 			mobile: { min: "0px", max: "480px" },
 			tablet: { min: "481px", max: "768px" },
 			laptop: { min: "769px", max: "1024px" },
+			...defaultTheme.screens,
 		  },
   	}
   },
